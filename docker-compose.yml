@@ -1,0 +1,64 @@
+# docker-compose.yml
+version: "2"
+services:
+  selenium-hub:
+    image: selenium/hub
+    container_name: 'selenium-hub'
+    ports:
+      - 4444:4444
+
+  chrome:
+    image: selenium/node-chrome-debug
+    container_name: 'chrome'
+    depends_on:
+      - selenium-hub
+    environment:
+      - HUB_HOST=selenium-hub
+      - HUB_PORT=4444
+    ports:
+      - 5900:5900
+    volumes:
+      - /dev/shm:/dev/shm
+    networks: 
+      - default
+      - docker-managesys_default
+
+  #firefox:
+  #  image: selenium/node-firefox-debug
+  #  container_name: 'firefox'
+  #  ports:
+  #   - 5910:5900
+  #  links:
+  #    - selenium-hub:hub
+
+  allure:
+    image: "frankescobar/allure-docker-service"
+    environment:
+      CHECK_RESULTS_EVERY_SECONDS: 1
+      KEEP_HISTORY: "TRUE"
+    ports:
+      - "4040:4040"
+      - "5050:5050"
+    volumes:
+      - ./script/allure-results:/app/allure-results
+
+  python:
+    build: './python-selenium'
+    container_name: 'python'
+    links:
+      - selenium-hub:hub
+    command: 'tail -f /dev/null'
+    working_dir: '/script/'
+    volumes:
+      - ./script/:/script/
+      - ./script/allure-results/:/tmp/allure_results/
+      - ./jenkins/:/var/lib/jenkins/
+    environment:
+      - 'TZ=Asia/Tokyo'
+    ports:
+      - "8081:8080"
+
+networks:
+  default:
+  docker-webapp-sample_default:
+    external: true
