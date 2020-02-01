@@ -58,8 +58,8 @@ class PageObject(object):
         # スクリーンショットのファイル名用に日付を取得
         dt = datetime.datetime.today()
         dtstr = dt.strftime("%Y%m%d%H%M%S")
-        self.driver.save_screenshot('/script/allure-results/images/' + filename + '_' + dtstr + '.png')
-        allure.attach.file('/script/allure-results/images/' + filename + '_' + dtstr + '.png', attachment_type=allure.attachment_type.PNG)
+        self.driver.save_screenshot('/tmp/allure-results/images/' + filename + '_' + dtstr + '.png')
+        allure.attach.file('/tmp/allure-results/images/' + filename + '_' + dtstr + '.png', attachment_type=allure.attachment_type.PNG)
     
     # ブラウザを閉じる
     def close_browser(self):

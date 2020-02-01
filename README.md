@@ -34,36 +34,6 @@ Perform the following steps:
 ## Starting Test
 Perform the following steps:
 
-### With Jenkins
-1. Change the authority of volume link directory.
-    ```bash
-    chmod 775 jenkins
-    ```
-1. Start Jenkins.
-    ```bash
-    # Start a bash session on a running container
-    docker exec -it python /bin/bash
-
-    # Start jenkins
-    service jenkins start
-    ```
-1. Unlock Jenkins.
-    ```bash
-    cat /var/lib/jenkins/secrets/initialAdminPassword
-    ```
-1. Create a job.
-    - Not install plugins.
-    - Set user name and password.
-    - Set 'Web UI Test' in the job name.
-    - Click Build -> Execute shell -> command
-       ```bash
-       cd /script/testcases
-       pytest --alluredir=/tmp/allure_results
-       ```
-    - Click Apply & Save button.
-1.  Click 'Build Now'
-
-### With Terminal
 1. Start a bash session on a running container in the following command.
     ```bash
     docker exec -it python /bin/bash
@@ -72,7 +42,7 @@ Perform the following steps:
 1. Run tests in following commands.
     ```bash
     cd /script/testcases
-    pytest --alluredir=/tmp/allure_results
+    pytest --alluredir=/tmp/allure-results
     ```
 
 ## Architecture
@@ -87,8 +57,8 @@ The following is the summary of each container.
     - Test the web app in Chrome browser.
 - Selenium Hub Container
     - Operate the browser of the Chrome container with Selenium.
-- Python & Jenkins Container
-    - Run Python test code with Jenkins.
+- Python Container
+    - Run Python test code.
 - Allure Container
     - Display test results in Allure.
 
@@ -106,28 +76,26 @@ The web application to be tested must support chrome or firefox.
 The follwing figure is the map of this sample project.
 
 ```
-+ jenkins               ... Volume link directory for jenkins.
-+ python-selenium       ... Dockerfile for the python container.
++ docker                    ... Dockerfile for the python container.
 - script
-  + allure-results      ... Volume link directory for test results.
-  + commons             ... Define common functions.
-  + pages               ... Define operations for each input element. 
-  + testflow            ... Define user operations of each page. A page uses a page object.
-  + testcase            ... Define testcases. A testcase uses a testflow.
-  - application.yml     ... Define test configuration.
-- cache-clean.sh        ... Shell Script for clean pycache.
+  + commons                 ... Define common functions.
+  + pages                   ... Define operations for each input element. 
+  + testflow                ... Define user operations of each page. A page uses a page object.
+  + testcase                ... Define testcases. A testcase uses a testflow.
+  - application.yml         ... Define test configuration.
+- volumes/allure-results    ... Volume link directory for test results.
+- cache-clean.sh            ... Shell Script for clean pycache.
 - docker-compose.yml
 ```
 
 ## Links
 The following is links to access a website of each container.
+The IP address of Docker Engine is `localhost`.
 
 - Selenium Hub
     - [http://localhost:4444/grid/console](http://localhost:4444/grid/console)
 - Allure
     - [http://localhost:4040/](http://localhost:4040/)
-- Jenkins
-    - [http://localhost:8080/](http://localhost:8080/)
 - Target Web Application
     - [http://localhost/](http://localhost/)
 

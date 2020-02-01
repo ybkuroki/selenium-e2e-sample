@@ -21,7 +21,7 @@ services:
       - /dev/shm:/dev/shm
     networks: 
       - default
-      - docker-managesys_default
+      - docker-webapp-sample_default
 
   #firefox:
   #  image: selenium/node-firefox-debug
@@ -33,6 +33,7 @@ services:
 
   allure:
     image: "frankescobar/allure-docker-service"
+    container_name: 'allure'
     environment:
       CHECK_RESULTS_EVERY_SECONDS: 1
       KEEP_HISTORY: "TRUE"
@@ -40,10 +41,10 @@ services:
       - "4040:4040"
       - "5050:5050"
     volumes:
-      - ./script/allure-results:/app/allure-results
+      - ./volumes/allure-results:/app/allure-results
 
   python:
-    build: './python-selenium'
+    build: './docker'
     container_name: 'python'
     links:
       - selenium-hub:hub
@@ -51,12 +52,9 @@ services:
     working_dir: '/script/'
     volumes:
       - ./script/:/script/
-      - ./script/allure-results/:/tmp/allure_results/
-      - ./jenkins/:/var/lib/jenkins/
+      - ./volumes/allure-results/:/tmp/allure-results/
     environment:
       - 'TZ=Asia/Tokyo'
-    ports:
-      - "8081:8080"
 
 networks:
   default:
