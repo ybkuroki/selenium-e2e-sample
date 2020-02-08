@@ -17,14 +17,14 @@ Perform the following steps:
 ## Starting Container
 Perform the following steps:
 
-1. Build the ``docker-compose.yml`` of this project.
-    ```bash
-    docker-compose build
-    ```
-1. Start containers of docker-webapp-sample project by Docker Compose.
+1. Start containers of [docker-webapp-sample](https://github.com/ybkuroki/docker-webapp-sample) project by Docker Compose.
     ```bash
     docker-compose -f docker-compose_springboot.yml build
     docker-compose -f docker-compose_springboot.yml up -d
+    ```
+1. Build the ``docker-compose.yml`` of this project.
+    ```bash
+    docker-compose build
     ```
 1. Start containers of this project by Docker Compose.
     ```bash
@@ -48,7 +48,7 @@ Perform the following steps:
 ## Architecture
 There are two environments such as this figure: the test environment and the web application environment.
 
-![image](./images/architecture.png)
+![architecture](./images/architecture.svg)
 
 ### Test Environment
 The following is the summary of each container.
@@ -90,7 +90,7 @@ The follwing figure is the map of this sample project.
 
 ## Links
 The following is links to access a website of each container.
-The IP address of Docker Engine is `localhost`.
+Assume the IP address of Docker Engine is `localhost`.
 
 - Selenium Hub
     - [http://localhost:4444/grid/console](http://localhost:4444/grid/console)
